@@ -33,6 +33,7 @@ jobs:
       # Windows: mismas tres órdenes de `make check`, sin depender de make en el runner.
       - name: Lint, formato y pruebas (Windows)
         if: runner.os == 'Windows'
+        shell: bash
         run: |
           uv run ruff check .
           uv run ruff format --check .
