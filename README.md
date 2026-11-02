@@ -10,9 +10,9 @@ y muestra el mapa de calor Grad-CAM.
 
 | Rol | Integrante | Código | Módulos a cargo |
 |---|---|---|---|
-| Capitán | `[Nombre]` | `[código]` | `read_img.py`, `preprocess_img.py` |
+| Capitán | `Jorge Gutierrez` | `[código]` | `read_img.py`, `preprocess_img.py` |
 | Revisor de código | Javier Henao | `[código]` | `integrator.py`, `ui.py` |
-| Integrante | `[Nombre]` | `[código]` | `load_model.py`, `grad_cam.py` |
+| Integrante | `Daniela Olave` | `[código]` | `load_model.py`, `grad_cam.py` |
 
 > ⚠️ Herramienta académica de apoyo. No reemplaza el diagnóstico de un profesional de la salud.
 
