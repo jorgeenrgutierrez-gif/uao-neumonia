@@ -1,0 +1,31 @@
+[project]
+name = "uao-neumonia"
+version = "0.1.0"
+description = "Detector de neumonía en radiografías de tórax con Grad-CAM (refactor modular del monolito UAO-Neumonia)"
+requires-python = "==3.13.*"
+dependencies = [
+    "numpy>=2.5.4",
+    "opencv-python-headless>=5.0.0.93",
+    "pillow>=13.0.0",
+    "pydicom>=3.0.2",
+    "tensorflow>=2.21.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
