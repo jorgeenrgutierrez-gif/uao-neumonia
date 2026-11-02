@@ -1,0 +1,17 @@
+# Finales de línea consistentes entre macOS y Windows.
+# Sin esto, Git en Windows puede convertir el Makefile a CRLF y `make` deja de funcionar.
+* text=auto eol=lf
+Makefile text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.lock text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+
+# Binarios: nunca se tocan
+*.h5 binary
+*.dcm binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.pdf binary
