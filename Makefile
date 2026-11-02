@@ -1,12 +1,15 @@
 # Atajos reproducibles. Todo pasa por uv (prohibido pip/requirements.txt).
 # Multiplataforma: funciona en macOS, Linux y Windows (cmd, PowerShell o Git Bash),
 # porque cada receta solo invoca `uv`; no usa rm, grep, awk ni cp.
-.PHONY: help install run test lint format check clean
+.PHONY: help install model run test lint format check clean
+
+MODEL := models/conv_MLP_84.h5
 
 help:  ## Lista los comandos disponibles
 	@echo Comandos disponibles:
 	@echo   make install  - Crea .venv con las versiones exactas de uv.lock
-	@echo   make run      - Abre la interfaz grafica
+	@echo   make model    - Descarga el modelo .h5 desde el Release de GitHub
+	@echo   make run      - Abre la interfaz grafica, descarga el modelo si falta
 	@echo   make test     - Ejecuta las pruebas con pytest
 	@echo   make lint     - Revisa estilo y errores con Ruff
 	@echo   make format   - Formatea el codigo con Ruff
@@ -16,7 +19,12 @@ help:  ## Lista los comandos disponibles
 install:  ## Crea .venv con las versiones exactas de uv.lock
 	uv sync --frozen
 
-run:  ## Abre la interfaz gráfica
+model: $(MODEL)  ## Descarga el modelo si no está en models/
+
+$(MODEL):
+	uv run python scripts/download_model.py
+
+run: $(MODEL)  ## Abre la interfaz gráfica (descarga el modelo la primera vez)
 	uv run python -m src.ui
 
 test:  ## Ejecuta las pruebas
