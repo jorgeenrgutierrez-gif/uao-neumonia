@@ -31,8 +31,7 @@ automáticamente a partir de `.python-version`. Funciona igual en **macOS, Windo
 git clone <URL-del-repo-del-equipo>.git
 cd uao-neumonia
 make install                      # uv sync --frozen → .venv idéntico a uv.lock
-cp /ruta/a/conv_MLP_84.h5 models/ # el modelo NO se versiona (118 MB > límite de GitHub)
-make run                          # abre la interfaz
+make run                          # descarga el modelo la 1.ª vez y abre la interfaz
 make check                        # ruff + formato + pytest
 ```
 
@@ -48,8 +47,7 @@ Instalar herramientas: `brew install uv git make` (o `curl -LsSf https://astral.
 git clone <URL-del-repo-del-equipo>.git
 cd uao-neumonia
 make install
-Copy-Item "C:\ruta\a\conv_MLP_84.h5" models\   # el modelo NO se versiona
-make run
+make run      # descarga el modelo la 1.ª vez y abre la interfaz
 make check
 ```
 
@@ -63,7 +61,8 @@ Sin `make`, cada atajo equivale a un comando `uv` (ver la tabla de abajo).
 | Comando | Qué hace | Equivalente sin `make` |
 |---|---|---|
 | `make install` | Crea el entorno con las versiones exactas de `uv.lock` | `uv sync --frozen` |
-| `make run` | Abre la interfaz | `uv run python -m src.ui` |
+| `make model` | Descarga `conv_MLP_84.h5` desde el Release de GitHub y verifica su SHA-256 | `uv run python scripts/download_model.py` |
+| `make run` | Abre la interfaz (antes descarga el modelo si falta) | `uv run python -m src.ui` |
 | `make test` | Corre las pruebas con pytest | `uv run pytest` |
 | `make lint` / `make format` | Ruff (lint / formato) | `uv run ruff check .` / `uv run ruff format .` |
 | `make check` | Lint + verificación de formato + pruebas | los tres comandos anteriores |
@@ -73,6 +72,12 @@ Sin `make`, cada atajo equivale a un comando `uv` (ver la tabla de abajo).
 El `Makefile` solo invoca `uv` (no usa `rm`, `cp`, `grep` ni `awk`), por eso corre igual en
 cmd, PowerShell, Git Bash, macOS y Linux. El archivo `.gitattributes` fija finales de línea LF
 para que Git en Windows no convierta el `Makefile` a CRLF.
+
+**Modelo:** `conv_MLP_84.h5` pesa 118 MB y GitHub no acepta archivos de más de 100 MB, por eso
+no está en el repositorio (`.gitignore`) sino publicado en el
+[Release `modelo-v1`](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/releases/tag/modelo-v1).
+`make run` lo descarga automáticamente la primera vez y verifica su huella SHA-256. Sin internet,
+basta copiarlo a mano en `models/`.
 
 Imágenes de prueba: descomprimir `DICOM.zip` y `JPG.zip` en `data/` (ignorado por Git).
 
@@ -151,13 +156,14 @@ Tkinter y no se usa la GUI de OpenCV (evita conflictos de Qt). `matplotlib`, `pa
 
 ## Pruebas
 
-28 pruebas con patrón **AAA** (Arrange / Act / Assert):
+30 pruebas con patrón **AAA** (Arrange / Act / Assert):
 
 | Archivo | Qué cubre |
 |---|---|
 | `test_read_img.py` | DICOM → RGB uint8, escala a 255, JPEG, rutas con tildes, despacho por extensión, formato no soportado |
 | `test_preprocess_img.py` | Forma del tensor, rango [0, 1], entrada en gris |
 | `test_load_model.py` | Error claro si falta el `.h5`; el modelo se carga una sola vez |
+| `test_download_model.py` | Descarga del modelo verificada con SHA-256 y rechazo de archivos corruptos (sin red) |
 | `test_grad_cam.py` | Heatmap normalizado, salida 512×512×3, heatmap en cero sin NaN |
 | `test_integrator.py` | Mapeo de etiquetas, clase inválida, orquestación con doble de prueba, CSV, PDF |
 | `test_ui.py` | Cargar imagen habilita *Predecir*, cancelar no, resultado en pantalla, *Guardar* sin predicción, *Borrar* (integrador simulado, sin modelo) |
