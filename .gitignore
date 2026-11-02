@@ -1,0 +1,35 @@
+# --- Entorno (lo reproduce uv sync) ---
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Prohibidos por las reglas del curso ---
+requirements.txt
+*.ipynb
+.ipynb_checkpoints/
+
+# --- Modelo y datos (pesados y/o sensibles: no van al repo) ---
+models/*
+!models/.gitkeep
+data/*
+!data/.gitkeep
+*.h5
+*.keras
+*.dcm
+*.zip
+
+# --- Salidas de la aplicación (contienen cédulas de pacientes) ---
+historial.csv
+Reporte*.pdf
+Reporte*.jpg
+
+# --- Sistema operativo / editores ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.env
