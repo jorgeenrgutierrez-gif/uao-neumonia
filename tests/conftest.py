@@ -39,8 +39,25 @@ def dicom_file(tmp_path, gray_gradient) -> Path:
 @pytest.fixture
 def jpg_file(tmp_path, gray_gradient) -> Path:
     path = tmp_path / "torax.jpeg"
-    cv2.imwrite(str(path), cv2.cvtColor(gray_gradient, cv2.COLOR_GRAY2BGR))
+    _write_jpeg(path, gray_gradient)
     return path
+
+
+@pytest.fixture
+def jpg_file_unicode_path(tmp_path, gray_gradient) -> Path:
+    """JPEG dentro de una carpeta con tildes, como 'GESTIÓN DE PROCESOS' en Windows."""
+    folder = tmp_path / "GESTIÓN Radiografías ñ"
+    folder.mkdir()
+    path = folder / "tórax.jpeg"
+    _write_jpeg(path, gray_gradient)
+    return path
+
+
+def _write_jpeg(path: Path, gray: np.ndarray) -> None:
+    # imencode + write_bytes: funciona con rutas Unicode en cualquier sistema operativo.
+    ok, buffer = cv2.imencode(".jpeg", cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR))
+    assert ok
+    path.write_bytes(buffer.tobytes())
 
 
 @pytest.fixture(scope="session")

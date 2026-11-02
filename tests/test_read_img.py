@@ -36,6 +36,16 @@ def test_read_jpg_returns_three_channels(jpg_file):
     assert preview.size == (300, 300)
 
 
+def test_read_jpg_supports_paths_with_accents(jpg_file_unicode_path):
+    # Arrange
+    path = jpg_file_unicode_path
+    # Act
+    array, preview = read_img.read_image(path)
+    # Assert
+    assert array.shape == (300, 300, 3)
+    assert preview.size == (300, 300)
+
+
 def test_read_image_dispatches_by_extension(dicom_file, jpg_file):
     # Arrange
     paths = [dicom_file, jpg_file]

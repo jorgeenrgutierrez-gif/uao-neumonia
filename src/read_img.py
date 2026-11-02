@@ -37,9 +37,25 @@ def read_dicom_file(path: str | Path) -> tuple[np.ndarray, Image.Image]:
     return img_rgb, img2show
 
 
+def _imread_unicode(path: str | Path) -> np.ndarray | None:
+    """Equivalente a `cv2.imread` que soporta rutas con tildes o ñ.
+
+    En Windows `cv2.imread` no abre rutas con caracteres no ASCII
+    (p. ej. "GESTIÓN"); leer los bytes con NumPy y decodificarlos con
+    `cv2.imdecode` funciona igual en Windows, macOS y Linux.
+    """
+    try:
+        data = np.fromfile(str(path), dtype=np.uint8)
+    except OSError:
+        return None
+    if data.size == 0:
+        return None
+    return cv2.imdecode(data, cv2.IMREAD_COLOR)
+
+
 def read_jpg_file(path: str | Path) -> tuple[np.ndarray, Image.Image]:
     """Lee un JPEG/PNG y devuelve (arreglo BGR uint8, imagen para mostrar)."""
-    img = cv2.imread(str(path))
+    img = _imread_unicode(path)
     if img is None:
         raise ValueError(f"No se pudo leer la imagen: {path}")
     img2 = _to_uint8(np.asarray(img))
