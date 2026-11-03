@@ -11,8 +11,8 @@ y muestra el mapa de calor Grad-CAM.
 | Rol | Integrante | Código | Módulos a cargo |
 |---|---|---|---|
 | Capitán | Jorge Enrique Gutiérrez Ramírez | `22601355` | `load_model.py`, `grad_cam.py` |
-| Revisor de código | Javier Henao Hernández | `[código]` | `integrator.py`, `ui.py` |
-| Integrante | Daniela Olave Alarcón | `[código]` | `read_img.py`, `preprocess_img.py` |
+| Revisor de código | Javier Henao Hernández | `22601329` | `integrator.py`, `ui.py` |
+| Integrante | Daniela Olave Alarcón | `2200630` | `read_img.py`, `preprocess_img.py` |
 
 > ⚠️ Herramienta académica de apoyo. No reemplaza el diagnóstico de un profesional de la salud.
 
