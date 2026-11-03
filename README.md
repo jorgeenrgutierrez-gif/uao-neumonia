@@ -10,7 +10,7 @@ y muestra el mapa de calor Grad-CAM.
 
 | Rol | Integrante | Código | Módulos a cargo |
 |---|---|---|---|
-| Capitán | Jorge Enrique Gutiérrez Ramírez | `[código]` | `load_model.py`, `grad_cam.py` |
+| Capitán | Jorge Enrique Gutiérrez Ramírez | `22601355` | `load_model.py`, `grad_cam.py` |
 | Revisor de código | Javier Henao Hernández | `[código]` | `integrator.py`, `ui.py` |
 | Integrante | Daniela Olave Alarcón | `[código]` | `read_img.py`, `preprocess_img.py` |
 
