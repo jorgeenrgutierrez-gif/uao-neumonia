@@ -70,5 +70,3 @@ def test_read_jpg_raises_for_missing_file(tmp_path):
     # Act / Assert
     with pytest.raises(ValueError, match="No se pudo leer"):
         read_img.read_jpg_file(path)
-        
-        

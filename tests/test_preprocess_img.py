@@ -29,7 +29,7 @@ def test_preprocess_accepts_grayscale_input():
     batch = preprocess(image)
     # Assert
     assert batch.shape == (1, 512, 512, 1)
-    
+
 
 def test_preprocess_returns_float_dtype():
     # Arrange
