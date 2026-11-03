@@ -28,7 +28,7 @@ automáticamente a partir de `.python-version`. Funciona igual en **macOS, Windo
 <summary><b>macOS / Linux</b> (Terminal)</summary>
 
 ```bash
-git clone <URL-del-repo-del-equipo>.git
+git clone https://github.com/jorgeenrgutierrez-gif/uao-neumonia.git
 cd uao-neumonia
 make install                      # uv sync --frozen → .venv idéntico a uv.lock
 make run                          # descarga el modelo la 1.ª vez y abre la interfaz
@@ -44,7 +44,7 @@ Instalar herramientas: `brew install uv git make` (o `curl -LsSf https://astral.
 <summary><b>Windows</b> (PowerShell)</summary>
 
 ```powershell
-git clone <URL-del-repo-del-equipo>.git
+git clone https://github.com/jorgeenrgutierrez-gif/uao-neumonia.git
 cd uao-neumonia
 make install
 make run      # descarga el modelo la 1.ª vez y abre la interfaz
@@ -156,12 +156,12 @@ Tkinter y no se usa la GUI de OpenCV (evita conflictos de Qt). `matplotlib`, `pa
 
 ## Pruebas
 
-30 pruebas con patrón **AAA** (Arrange / Act / Assert):
+32 pruebas con patrón **AAA** (Arrange / Act / Assert):
 
 | Archivo | Qué cubre |
 |---|---|
-| `test_read_img.py` | DICOM → RGB uint8, escala a 255, JPEG, rutas con tildes, despacho por extensión, formato no soportado |
-| `test_preprocess_img.py` | Forma del tensor, rango [0, 1], entrada en gris |
+| `test_read_img.py` | DICOM → RGB uint8, escala a 255, JPEG, rutas con tildes, despacho por extensión, formato no soportado, archivo inexistente |
+| `test_preprocess_img.py` | Forma del tensor, rango [0, 1], entrada en gris, salida de tipo float |
 | `test_load_model.py` | Error claro si falta el `.h5`; el modelo se carga una sola vez |
 | `test_download_model.py` | Descarga del modelo verificada con SHA-256 y rechazo de archivos corruptos (sin red) |
 | `test_grad_cam.py` | Heatmap normalizado, salida 512×512×3, heatmap en cero sin NaN |
@@ -181,8 +181,13 @@ con la carpeta de origen.
 - Ramas `feature/<módulo>` desde `develop`; todo entra por **Pull Request** con la plantilla
   `.github/pull_request_template.md` y la aprobación de otro integrante.
 - Commits convencionales: `feat:`, `fix:`, `test:`, `docs:`, `refactor:`, `chore:`, `ci:`.
+- Ramas `test/<tema>` para pruebas y `ci/<tema>` para la integración continua.
 - GitHub Actions ejecuta `make check` en cada PR, en **Ubuntu, macOS y Windows**
-  (en Linux con `xvfb-run` para que las pruebas de Tkinter tengan pantalla).
+  (en Linux con `xvfb-run` para que las pruebas de Tkinter tengan pantalla; en Windows con
+  `shell: bash` para que el paso falle si falla cualquiera de los comandos).
+- El modelo `conv_MLP_84.h5` se publica como archivo del
+  [Release `modelo-v1`](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/releases/tag/modelo-v1),
+  no en el repositorio.
 
 ```bash
 git checkout develop && git pull
@@ -192,6 +197,19 @@ make check
 git commit -m "feat(read_img): descripción corta"
 git push -u origin feature/<tema>   # luego abrir el PR hacia develop en GitHub
 ```
+
+### Historial de revisión
+
+Después de la estructura inicial, los cambios entraron a `develop` por Pull Request revisado por otro integrante:
+
+| PR | Cambio | Autor | Revisó y aprobó |
+|---|---|---|---|
+| [#1](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/pull/1) | `fix:` compatibilidad Windows/macOS y pruebas de la UI | Jorge Gutiérrez | Javier Henao |
+| [#2](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/pull/2) | `feat:` descarga automática del modelo desde el Release | Jorge Gutiérrez | Daniela Olave |
+| [#3](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/pull/3) | `ci:` bash en Windows para que el paso falle ante cualquier error | Javier Henao | Jorge Gutiérrez |
+| [#4](https://github.com/jorgeenrgutierrez-gif/uao-neumonia/pull/4) | `test:` casos borde de `read_img` y `preprocess_img` | Daniela Olave | Jorge Gutiérrez |
+
+La sugerencia del PR #3 salió de la revisión del PR #1.
 
 ## Créditos
 
