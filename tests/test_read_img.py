@@ -62,3 +62,11 @@ def test_read_image_rejects_unsupported_extension(tmp_path):
     # Act / Assert
     with pytest.raises(ValueError, match="no soportado"):
         read_img.read_image(path)
+
+
+def test_read_jpg_raises_for_missing_file(tmp_path):
+    # Arrange
+    path = tmp_path / "no_existe.jpg"
+    # Act / Assert
+    with pytest.raises(ValueError, match="No se pudo leer"):
+        read_img.read_jpg_file(path)

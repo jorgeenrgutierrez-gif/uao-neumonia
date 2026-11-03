@@ -29,3 +29,12 @@ def test_preprocess_accepts_grayscale_input():
     batch = preprocess(image)
     # Assert
     assert batch.shape == (1, 512, 512, 1)
+
+
+def test_preprocess_returns_float_dtype():
+    # Arrange
+    image = np.zeros((256, 256, 3), dtype=np.uint8)
+    # Act
+    batch = preprocess(image)
+    # Assert
+    assert np.issubdtype(batch.dtype, np.floating)
