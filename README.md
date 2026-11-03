@@ -200,7 +200,7 @@ git push -u origin feature/<tema>   # luego abrir el PR hacia develop en GitHub
 
 ### Historial de revisión
 
-Cada cambio entró a `develop` por Pull Request con la aprobación de otro integrante:
+Después de la estructura inicial, los cambios entraron a `develop` por Pull Request revisado por otro integrante:
 
 | PR | Cambio | Autor | Revisó y aprobó |
 |---|---|---|---|
