@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  check:
+    name: make check (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # El equipo trabaja en macOS y Windows: se valida en los tres sistemas.
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Instalar dependencias (versiones exactas de uv.lock)
+        run: uv sync --frozen
+
+      # Linux no tiene pantalla: xvfb crea una virtual para las pruebas de Tkinter.
+      - name: Lint, formato y pruebas (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a make check
+
+      - name: Lint, formato y pruebas (macOS)
+        if: runner.os == 'macOS'
+        run: make check
+
+      # Windows: mismas tres órdenes de `make check`, sin depender de make en el runner.
+      - name: Lint, formato y pruebas (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run pytest
