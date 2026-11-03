@@ -27,7 +27,8 @@ def load_model():
     if not path.is_file():
         raise FileNotFoundError(
             f"No se encontró el modelo en '{path}'. "
-            f"Copie conv_MLP_84.h5 a models/ o defina {MODEL_ENV_VAR}."
+            f"Ejecute 'make model' para descargarlo, copie conv_MLP_84.h5 a models/ "
+            f"o defina {MODEL_ENV_VAR}."
         )
     import keras  # import diferido: cargar TensorFlow solo cuando se necesita
 
